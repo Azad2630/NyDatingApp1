@@ -1,0 +1,69 @@
+﻿@page "/details"
+@rendermode InteractiveServer
+@inject NyDatingApp1.Data.datingdatabase Db
+@inject NavigationManager NavigationManager
+@inject IUserService UserService
+
+<PageTitle>Details</PageTitle>
+
+<h1>Details</h1>
+@{
+    if (UserService.IsUserLoggedIn())
+    {
+        <div>
+            <h4>Current User: @user.Login</h4>
+            <hr />
+            @if (user is null)
+            {
+                <p><em>Loading...</em></p>
+            }
+            else
+            {
+                <dl class="row">
+                    <dt class="col-sm-2">FirstName</dt>
+                    <dd class="col-sm-10">@user.FirstName</dd>
+                    <dt class="col-sm-2">LastName</dt>
+                    <dd class="col-sm-10">@user.LastName</dd>
+                    <dt class="col-sm-2">Email</dt>
+                    <dd class="col-sm-10">@user.Email</dd>
+                    <dt class="col-sm-2">Login</dt>
+                    <dd class="col-sm-10">@user.Login</dd>
+                    <dt class="col-sm-2">Password</dt>
+                    <dd class="col-sm-10">@user.Password</dd>
+                    <dt class="col-sm-2">Password2</dt>
+                    <dd class="col-sm-10">@user.Password2</dd>
+                    <dt class="col-sm-2">CreateDate</dt>
+                    <dd class="col-sm-10">@user.CreateDate</dd>
+                    <dt class="col-sm-2">DeleteDate</dt>
+                    <dd class="col-sm-10">@user.DeleteDate</dd>
+                </dl>
+                <div>
+                    <a href="@($"/users/edit?id={user.Id}")">Edit</a> |
+                    <a href="@($"/users")">Back to List</a>
+                </div>
+            }
+        </div>
+        <button type="button" onclick="@Logout" class="btn btn-primary">Logout</button>
+    }
+    else
+    {
+        @errorMessage
+    }
+}
+
+@code {
+    private Account? user;
+
+    public string errorMessage = "No user logged in";
+
+    protected override async Task OnInitializedAsync()
+    {
+        user = UserService.GetUser();
+    }
+
+    public async Task Logout()
+    {
+        UserService.Logout();
+        NavigationManager.NavigateTo("/Login");
+    }
+}

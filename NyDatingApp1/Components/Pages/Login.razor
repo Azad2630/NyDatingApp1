@@ -1,0 +1,31 @@
+﻿@page "/login"
+@inject NavigationManager NavigationManager
+@inject datingdatabase Db
+@inject IUserService UserService
+@rendermode InteractiveServer
+
+<h3>UserLogin</h3>
+<EditForm method="post" Model="user" OnValidSubmit="logins" FormName="login" Enhance>
+    <div class="mb-3">
+        <label for="login" class="form-label">Login:</label>
+        <InputText id="login" @bind-Value="user.Login" class="form-control" />
+    </div>
+    <div class="mb-3">
+        <label for="password" class="form-label">Password:</label>
+        <InputText type="password" id="password" @bind-Value="user.Password" class="form-control" />
+    </div>
+    <button type="submit" class="btn btn-primary">Login</button>
+</EditForm>
+
+@code {
+    private Account user { get; set; } = new Account();
+
+    public async Task logins()
+    {
+        var success = UserService.Login(user.Login, user.Password);
+        if (success)
+        {
+            NavigationManager.NavigateTo("/details");
+        }
+    }
+}
