@@ -1,4 +1,4 @@
-﻿@page "/Accounts/Create"
+﻿@page "/Tabel/Create"
 @inject NyDatingApp1.Data.datingdatabase Db
 @using NyDatingApp1.Models
 @inject NavigationManager NavigationManager
@@ -40,18 +40,18 @@
                 <InputText id="password" @bind-Value="Account.Password" class="form-control" />
                 <ValidationMessage For="() => Account.Password" class="text-danger" />
             </div>
-            <div class="mb-3">
+            @* <div class="mb-3">
                 <label for="password2" class="form-label">Password2:</label>
                 <InputText id="password2" @bind-Value="Account.Password2" class="form-control" />
                 <ValidationMessage For="() => Account.Password2" class="text-danger" />
-            </div>
+            </div> *@
             <button type="submit" class="btn btn-primary">Create</button>
         </EditForm>
     </div>
 </div>
 
 <div>
-    <a href="/Accounts">Back to List</a>
+    <a href="/Tabel">Back to List</a>
 </div>
 
 @code {
@@ -64,6 +64,6 @@
     {
         Db.Accounts.Add(Account);
         await Db.SaveChangesAsync();
-        NavigationManager.NavigateTo("/Accounts");
+        NavigationManager.NavigateTo("/Tabel");
     }
 }

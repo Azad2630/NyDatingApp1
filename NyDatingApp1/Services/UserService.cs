@@ -1,4 +1,4 @@
-﻿//using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages;
+﻿using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages;
 using NyDatingApp1.Data;
 using NyDatingApp1.Models;
 using System.Drawing.Printing;
@@ -7,7 +7,7 @@ namespace NyDatingApp1.Services
 {
     public class UserService : IUserService
     {
-        private readonly datingdatabase _1datingdatabase;
+        private readonly datingdatabase _datingdatabase;
         private Account _currentUser;
         public int Id { get; set; }
         public string? FirstName { get; set; }
@@ -16,12 +16,12 @@ namespace NyDatingApp1.Services
 
         public UserService(datingdatabase datingdatabase)
         {
-            _1datingdatabase = datingdatabase;
+            _datingdatabase = datingdatabase;
         }
 
         public bool Login(string username, string password)
         {
-            var user = _1datingdatabase.Accounts.FirstOrDefault(u => u.Login == username && u.Password == password);
+            var user = _datingdatabase.Accounts.FirstOrDefault(u => u.Login == username && u.Password == password);
             if (user != null)
             {
                 _currentUser = user;

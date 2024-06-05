@@ -1,4 +1,4 @@
-﻿@page "/Accounts"
+﻿@page "/Tabel"
 @using Microsoft.AspNetCore.Components.QuickGrid
 @inject NyDatingApp1.Data.datingdatabase Db
 @using NyDatingApp1.Models
@@ -8,7 +8,7 @@
 <h1>Index</h1>
 
 <p>
-    <a href="Accounts/create">Create New</a>
+    <a href="Tabel/create">Create New</a>
 </p>
 
 <QuickGrid Class="table" Items="Db.Accounts">
@@ -17,13 +17,13 @@
     <PropertyColumn Property="user => user.Email" />
     <PropertyColumn Property="user => user.Login" />
     <PropertyColumn Property="user => user.Password" />
-    <PropertyColumn Property="user => user.Password2" />
+    @* <PropertyColumn Property="user => user.Password2" /> *@
     <PropertyColumn Property="user => user.CreateDate" />
     <PropertyColumn Property="user => user.DeleteDate" />
 
     <TemplateColumn Context="user">
-        <a href="@($"Accounts/edit?id={user.Id}")">Edit</a> |
-        <a href="@($"Accounts/details?id={user.Id}")">Details</a> |
-        <a href="@($"Accounts/delete?id={user.Id}")">Delete</a>
+        <a href="@($"Tabel/edit?id={user.AccountId}")">Edit</a> |
+        <a href="@($"Tabel/details?id={user.AccountId}")">Details</a> |
+        <a href="@($"Tabel/delete?id={user.AccountId}")">Delete</a>
     </TemplateColumn>
 </QuickGrid>

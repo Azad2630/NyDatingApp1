@@ -1,4 +1,4 @@
-﻿@page "/Accounts/edit"
+﻿@page "/Tabel/edit"
 @inject NyDatingApp1.Data.datingdatabase Db
 @using NyDatingApp1.Models
 @inject NavigationManager NavigationManager
@@ -22,7 +22,7 @@ else
             <EditForm method="post" Model="User" OnValidSubmit="UpdateUser" FormName="edit" Enhance>
                 <DataAnnotationsValidator />
                 <ValidationSummary />
-                <input type="hidden" name="User.Id" value="@User.Id" />
+                <input type="hidden" name="User.Id" value="@User.AccountId" />
                 <div class="mb-3">
                     <label for="firstname" class="form-label">FirstName:</label>
                     <InputText id="firstname" @bind-Value="User.FirstName" class="form-control" />
@@ -48,11 +48,11 @@ else
                     <InputText id="password" @bind-Value="User.Password" class="form-control" />
                     <ValidationMessage For="() => User.Password" class="text-danger" />
                 </div>
-                <div class="mb-3">
+                @* <div class="mb-3">
                     <label for="password2" class="form-label">Password2:</label>
                     <InputText id="password2" @bind-Value="User.Password2" class="form-control" />
                     <ValidationMessage For="() => User.Password2" class="text-danger" />
-                </div>
+                </div> *@
                 <div class="mb-3">
                     <label for="createdate" class="form-label">CreateDate:</label>
                     <InputDate id="createdate" @bind-Value="User.CreateDate" class="form-control" />
@@ -65,7 +65,7 @@ else
 }
 
 <div>
-    <a href="/users">Back to List</a>
+    <a href="/Tabel">Back to List</a>
 </div>
 
 @code {
@@ -77,7 +77,7 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        User ??= await Db.Accounts.FirstOrDefaultAsync(m => m.Id == Id);
+        User ??= await Db.Accounts.FirstOrDefaultAsync(m => m.AccountId == Id);
 
         if (User is null)
         {
@@ -97,7 +97,7 @@ else
         }
         catch (DbUpdateConcurrencyException)
         {
-            if (!UserExists(User!.Id))
+            if (!UserExists(User!.AccountId))
             {
                 NavigationManager.NavigateTo("notfound");
             }
@@ -107,11 +107,11 @@ else
             }
         }
 
-        NavigationManager.NavigateTo("/users");
+        NavigationManager.NavigateTo("/Tabel");
     }
 
     bool UserExists(int id)
     {
-        return Db.Accounts.Any(e => e.Id == id);
+        return Db.Accounts.Any(e => e.AccountId == id);
     }
 }

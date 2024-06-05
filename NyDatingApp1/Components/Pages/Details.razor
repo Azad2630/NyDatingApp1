@@ -30,16 +30,16 @@
                     <dd class="col-sm-10">@user.Login</dd>
                     <dt class="col-sm-2">Password</dt>
                     <dd class="col-sm-10">@user.Password</dd>
-                    <dt class="col-sm-2">Password2</dt>
-                    <dd class="col-sm-10">@user.Password2</dd>
+                    @*<dt class="col-sm-2">Password2</dt>
+                    <dd class="col-sm-10">@user.Password2</dd>*@
                     <dt class="col-sm-2">CreateDate</dt>
                     <dd class="col-sm-10">@user.CreateDate</dd>
                     <dt class="col-sm-2">DeleteDate</dt>
                     <dd class="col-sm-10">@user.DeleteDate</dd>
                 </dl>
                 <div>
-                    <a href="@($"/users/edit?id={user.Id}")">Edit</a> |
-                    <a href="@($"/users")">Back to List</a>
+                    <a href="@($"/Tabel/edit?id={user.AccountId}")">Edit</a> |
+                    <a href="@($"/Tabel")">Back to List</a>
                 </div>
             }
         </div>
