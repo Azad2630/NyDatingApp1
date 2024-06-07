@@ -19,7 +19,7 @@
     <PropertyColumn Property="user => user.Password" />
     @* <PropertyColumn Property="user => user.Password2" /> *@
     <PropertyColumn Property="user => user.CreateDate" />
-    <PropertyColumn Property="user => user.DeleteDate" />
+    @* <PropertyColumn Property="user => user.DeleteDate" /> *@
 
     <TemplateColumn Context="user">
         <a href="@($"Tabel/edit?id={user.AccountId}")">Edit</a> |

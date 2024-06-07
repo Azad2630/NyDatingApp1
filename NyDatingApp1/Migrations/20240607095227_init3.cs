@@ -5,7 +5,7 @@
 namespace NyDatingApp1.Migrations
 {
     /// <inheritdoc />
-    public partial class newTable : Migration
+    public partial class init3 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -19,14 +19,6 @@ namespace NyDatingApp1.Migrations
                 table: "Accounts");
 
             migrationBuilder.DropColumn(
-                name: "CityId",
-                table: "Profiles");
-
-            migrationBuilder.DropColumn(
-                name: "UserId",
-                table: "Profiles");
-
-            migrationBuilder.DropColumn(
                 name: "ProfileId",
                 table: "Accounts");
         }
@@ -34,20 +26,6 @@ namespace NyDatingApp1.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<int>(
-                name: "CityId",
-                table: "Profiles",
-                type: "int",
-                nullable: false,
-                defaultValue: 0);
-
-            migrationBuilder.AddColumn<int>(
-                name: "UserId",
-                table: "Profiles",
-                type: "int",
-                nullable: false,
-                defaultValue: 0);
-
             migrationBuilder.AddColumn<int>(
                 name: "ProfileId",
                 table: "Accounts",
@@ -58,7 +36,8 @@ namespace NyDatingApp1.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Accounts_ProfileId",
                 table: "Accounts",
-                column: "ProfileId");
+                column: "ProfileId",
+                unique: true);
 
             migrationBuilder.AddForeignKey(
                 name: "FK_Accounts_Profiles_ProfileId",

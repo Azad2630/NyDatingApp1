@@ -10,7 +10,7 @@ namespace NyDatingApp1.Models
 
         [Required(ErrorMessage = "Please provide a First Name")]
         [StringLength(100)]
-        public string FirstName { get; set; } 
+        public string FirstName { get; set; }
 
         [Required(ErrorMessage = "Please provide a Last Name")]
         [StringLength(100)]
@@ -27,15 +27,15 @@ namespace NyDatingApp1.Models
 
         [Required(ErrorMessage = "Please provide a Password")]
         [StringLength(100)]
-        public string Password { get; set; } 
+        public string Password { get; set; }
 
-        [Required(ErrorMessage = "Please provide a Password2")]
-        [StringLength(100)]
-        //public string Password2 { get; set; } = string.Empty;
+        //[Required(ErrorMessage = "Please provide a Password2")]
+        //[StringLength(100)]
+        //public string Password2 { get; set; } // Tilføj denne linje, hvis du vil inkludere Password2
 
-        public DateTime CreateDate { get; set; }
+        public DateTime CreateDate { get; set; } // Ingen StringLength her
 
-        public DateTime? DeleteDate { get; set; }
+        //public int ProfileId { get; set; }
 
         //public Profile Profile { get; set; }
     }

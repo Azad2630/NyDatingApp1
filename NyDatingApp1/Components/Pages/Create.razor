@@ -12,7 +12,7 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <EditForm method="post" Model="Account" OnValidSubmit="AddAccount" FormName="create" Enhance>
+        <EditForm Model="@Account" OnValidSubmit="AddAccount">
             <DataAnnotationsValidator />
             <ValidationSummary class="text-danger" />
             <div class="mb-3">
@@ -55,15 +55,23 @@
 </div>
 
 @code {
-
-    [SupplyParameterFromForm]
     public Account Account { get; set; } = new();
 
     // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
     public async Task AddAccount()
     {
-        Db.Accounts.Add(Account);
-        await Db.SaveChangesAsync();
-        NavigationManager.NavigateTo("/Tabel");
+        try
+        {
+            Console.WriteLine("AddAccount method called.");
+            Db.Accounts.Add(Account);
+            await Db.SaveChangesAsync();
+            Console.WriteLine("Account saved successfully.");
+            NavigationManager.NavigateTo("/Tabel");
+        }
+        catch (Exception ex)
+        {
+            // Log the error or display a message to the user
+            Console.WriteLine($"Error creating account: {ex.Message}");
+        }
     }
 }

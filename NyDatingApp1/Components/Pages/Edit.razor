@@ -58,6 +58,13 @@ else
                     <InputDate id="createdate" @bind-Value="User.CreateDate" class="form-control" />
                     <ValidationMessage For="() => User.CreateDate" class="text-danger" />
                 </div>
+
+                @* <div class="mb-3">
+                    <label for="Height" class="form-label">Height:</label>
+                    <InputDate id="Height" @bind-Value="Profile.Height" class="form-control" />
+                    <ValidationMessage For="() => Profile.Height" class="text-danger" />
+                </div> *@
+
                 <button type="submit" class="btn btn-primary">Save</button>
             </EditForm>
         </div>
@@ -75,6 +82,8 @@ else
     [SupplyParameterFromForm]
     public Account? User { get; set; }
 
+    // public Profile Profile { get; set; }
+
     protected override async Task OnInitializedAsync()
     {
         User ??= await Db.Accounts.FirstOrDefaultAsync(m => m.AccountId == Id);
@@ -90,6 +99,8 @@ else
     public async Task UpdateUser()
     {
         Db.Attach(User!).State = EntityState.Modified;
+
+        // Db.Attach(Profile).State = EntityState.Modified;
 
         try
         {

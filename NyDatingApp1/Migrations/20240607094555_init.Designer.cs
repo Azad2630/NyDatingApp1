@@ -12,7 +12,7 @@ using NyDatingApp1.Data;
 namespace NyDatingApp1.Migrations
 {
     [DbContext(typeof(datingdatabase))]
-    [Migration("20240605060139_init")]
+    [Migration("20240607094555_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -35,12 +35,8 @@ namespace NyDatingApp1.Migrations
 
                     b.Property<DateTime>("CreateDate")
                         .ValueGeneratedOnAdd()
-                        .HasMaxLength(100)
                         .HasColumnType("datetime2")
                         .HasDefaultValueSql("GETDATE()");
-
-                    b.Property<DateTime?>("DeleteDate")
-                        .HasColumnType("datetime2");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -91,13 +87,7 @@ namespace NyDatingApp1.Migrations
                     b.Property<DateTime>("BirthDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("CityId")
-                        .HasColumnType("int");
-
                     b.Property<int>("Height")
-                        .HasColumnType("int");
-
-                    b.Property<int>("UserId")
                         .HasColumnType("int");
 
                     b.Property<string>("UserName")

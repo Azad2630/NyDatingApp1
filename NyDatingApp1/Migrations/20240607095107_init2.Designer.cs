@@ -12,8 +12,8 @@ using NyDatingApp1.Data;
 namespace NyDatingApp1.Migrations
 {
     [DbContext(typeof(datingdatabase))]
-    [Migration("20240605060427_newTable")]
-    partial class newTable
+    [Migration("20240607095107_init2")]
+    partial class init2
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -35,12 +35,8 @@ namespace NyDatingApp1.Migrations
 
                     b.Property<DateTime>("CreateDate")
                         .ValueGeneratedOnAdd()
-                        .HasMaxLength(100)
                         .HasColumnType("datetime2")
                         .HasDefaultValueSql("GETDATE()");
-
-                    b.Property<DateTime?>("DeleteDate")
-                        .HasColumnType("datetime2");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -67,7 +63,13 @@ namespace NyDatingApp1.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
+                    b.Property<int>("ProfileId")
+                        .HasColumnType("int");
+
                     b.HasKey("AccountId");
+
+                    b.HasIndex("ProfileId")
+                        .IsUnique();
 
                     b.ToTable("Accounts");
                 });
@@ -97,6 +99,23 @@ namespace NyDatingApp1.Migrations
                     b.HasKey("ProfileId");
 
                     b.ToTable("Profiles");
+                });
+
+            modelBuilder.Entity("NyDatingApp1.Models.Account", b =>
+                {
+                    b.HasOne("NyDatingApp1.Models.Profile", "Profile")
+                        .WithOne("Account")
+                        .HasForeignKey("NyDatingApp1.Models.Account", "ProfileId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Profile");
+                });
+
+            modelBuilder.Entity("NyDatingApp1.Models.Profile", b =>
+                {
+                    b.Navigation("Account")
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

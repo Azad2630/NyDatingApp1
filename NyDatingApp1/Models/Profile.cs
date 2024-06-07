@@ -1,9 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace NyDatingApp1.Models
 {
     public class Profile
     {
+        [Key]
+        //[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ProfileId { get; set; }
         [Required(ErrorMessage = "Please provide a User Name")]
         [StringLength(100)]
@@ -16,6 +19,8 @@ namespace NyDatingApp1.Models
         public int Height { get; set; }
 
         public string? AboutMe { get; set; }
+
+        //public Account Account { get; set; }
 
         //[Required(ErrorMessage = "Please provide a Valid City Id")]
 
