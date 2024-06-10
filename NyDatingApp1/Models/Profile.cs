@@ -1,11 +1,12 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace NyDatingApp1.Models
 {
     public class Profile
     {
-        [Key]
+        
         //[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ProfileId { get; set; }
         [Required(ErrorMessage = "Please provide a User Name")]
@@ -22,17 +23,19 @@ namespace NyDatingApp1.Models
 
         //public Account Account { get; set; }
 
-        //[Required(ErrorMessage = "Please provide a Valid City Id")]
+        //public ICollection<Account> Accounts { get; set; } = new List<Account>();
 
-        //public int CityId { get; set; }
-        //[Required(ErrorMessage = "Please provide a Valid User Id")]
-        //public int UserId { get; set; }
+        [Required(ErrorMessage = "Please provide a Valid City Id")]
+
+        public int CityId { get; set; }
+        [Required(ErrorMessage = "Please provide a Valid User Id")]
+        public int UserId { get; set; }
+
+        //Navigation property for self-referencing many-to-many relationship
+        public virtual ICollection<Like> LikedByUsers { get; set; } = new List<Like>();
+        public virtual ICollection<Like> LikedUsers { get; set; } = new List<Like>();
 
         // Navigation property for self-referencing many-to-many relationship
-        //public virtual ICollection<Like> LikedByUsers { get; set; } = new List<Like>();
-        //public virtual ICollection<Like> LikedUsers { get; set; } = new List<Like>();
-
-        //// Navigation property for self-referencing many-to-many relationship
         //public virtual ICollection<Message> SentByUsers { get; set; } = new List<Message>();
         //public virtual ICollection<Message> ReceivedByUsers { get; set; } = new List<Message>();
     }

@@ -23,7 +23,7 @@
 
     <TemplateColumn Context="user">
         <a href="@($"Tabel/edit?id={user.AccountId}")">Edit</a> |
-        <a href="@($"Tabel/details?id={user.AccountId}")">Details</a> |
+        @* <a href="@($"Tabel/details?id={user.AccountId}")">Details</a> | *@
         <a href="@($"Tabel/delete?id={user.AccountId}")">Delete</a>
     </TemplateColumn>
 </QuickGrid>

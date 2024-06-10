@@ -5,7 +5,7 @@
 namespace NyDatingApp1.Migrations
 {
     /// <inheritdoc />
-    public partial class init3 : Migration
+    public partial class unit2 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -36,8 +36,7 @@ namespace NyDatingApp1.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Accounts_ProfileId",
                 table: "Accounts",
-                column: "ProfileId",
-                unique: true);
+                column: "ProfileId");
 
             migrationBuilder.AddForeignKey(
                 name: "FK_Accounts_Profiles_ProfileId",
