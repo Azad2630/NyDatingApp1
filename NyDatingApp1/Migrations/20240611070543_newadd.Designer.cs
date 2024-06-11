@@ -12,8 +12,8 @@ using NyDatingApp1.Data;
 namespace NyDatingApp1.Migrations
 {
     [DbContext(typeof(datingdatabase))]
-    [Migration("20240610093708_unit2")]
-    partial class unit2
+    [Migration("20240611070543_newadd")]
+    partial class newadd
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -71,17 +71,17 @@ namespace NyDatingApp1.Migrations
             modelBuilder.Entity("NyDatingApp1.Models.City", b =>
                 {
                     b.Property<int>("CityId")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CityId"));
 
                     b.Property<string>("CityName")
                         .IsRequired()
-                        .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.HasKey("CityId");
-
-                    b.HasIndex("CityName")
-                        .IsUnique();
 
                     b.ToTable("Cities");
                 });
@@ -101,9 +101,7 @@ namespace NyDatingApp1.Migrations
                         .HasColumnType("int");
 
                     b.Property<int>("Status")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasDefaultValueSql("0");
+                        .HasColumnType("int");
 
                     b.HasKey("LikeId");
 
@@ -125,6 +123,9 @@ namespace NyDatingApp1.Migrations
                     b.Property<string>("AboutMe")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("AccountId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("BirthDate")
                         .HasColumnType("datetime2");
 
@@ -134,15 +135,15 @@ namespace NyDatingApp1.Migrations
                     b.Property<int>("Height")
                         .HasColumnType("int");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
                     b.Property<string>("UserName")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
                     b.HasKey("ProfileId");
+
+                    b.HasIndex("AccountId")
+                        .IsUnique();
 
                     b.HasIndex("CityId");
 
@@ -151,42 +152,58 @@ namespace NyDatingApp1.Migrations
 
             modelBuilder.Entity("NyDatingApp1.Models.Like", b =>
                 {
-                    b.HasOne("NyDatingApp1.Models.Profile", "Likee")
-                        .WithMany("LikedByUsers")
+                    b.HasOne("NyDatingApp1.Models.Profile", "ReceiverProfile")
+                        .WithMany("ReceivedLikes")
                         .HasForeignKey("ReceiverId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("NyDatingApp1.Models.Profile", "Liker")
-                        .WithMany("LikedUsers")
+                    b.HasOne("NyDatingApp1.Models.Profile", "SenderProfile")
+                        .WithMany("SentLikes")
                         .HasForeignKey("SenderId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.Navigation("Likee");
+                    b.Navigation("ReceiverProfile");
 
-                    b.Navigation("Liker");
+                    b.Navigation("SenderProfile");
                 });
 
             modelBuilder.Entity("NyDatingApp1.Models.Profile", b =>
                 {
-                    b.HasOne("NyDatingApp1.Models.City", null)
-                        .WithMany("profiles")
+                    b.HasOne("NyDatingApp1.Models.Account", "Account")
+                        .WithOne("Profile")
+                        .HasForeignKey("NyDatingApp1.Models.Profile", "AccountId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("NyDatingApp1.Models.City", "City")
+                        .WithMany("Profiles")
                         .HasForeignKey("CityId")
                         .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Account");
+
+                    b.Navigation("City");
+                });
+
+            modelBuilder.Entity("NyDatingApp1.Models.Account", b =>
+                {
+                    b.Navigation("Profile")
                         .IsRequired();
                 });
 
             modelBuilder.Entity("NyDatingApp1.Models.City", b =>
                 {
-                    b.Navigation("profiles");
+                    b.Navigation("Profiles");
                 });
 
             modelBuilder.Entity("NyDatingApp1.Models.Profile", b =>
                 {
-                    b.Navigation("LikedByUsers");
+                    b.Navigation("ReceivedLikes");
 
-                    b.Navigation("LikedUsers");
+                    b.Navigation("SentLikes");
                 });
 #pragma warning restore 612, 618
         }

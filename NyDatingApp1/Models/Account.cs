@@ -1,4 +1,5 @@
-﻿using NyDatingApp1.Models;
+﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using NyDatingApp1.Models;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -6,6 +7,7 @@ namespace NyDatingApp1.Models
 {
     public class Account
     {
+        [Key]
         public int AccountId { get; set; }
 
         [Required(ErrorMessage = "Please provide a First Name")]
@@ -38,5 +40,6 @@ namespace NyDatingApp1.Models
         //public int ProfileId { get; set; }
 
         //public Profile Profile { get; set; }
+        public Profile Profile { get; set; }
     }
 }
