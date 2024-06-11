@@ -12,8 +12,9 @@ namespace NyDatingApp1.Models
 
 
         [Required(ErrorMessage = "Please provide a Valid City Id")]
-        [ForeignKey("City")]
+        [ForeignKey("CityId")]
         public int CityId { get; set; }
+
 
         [ForeignKey("Account")]
         public int AccountId { get; set; }

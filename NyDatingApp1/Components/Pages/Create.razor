@@ -9,6 +9,13 @@
 <h1>Create</h1>
 
 <h4>Account</h4>
+
+@code{
+    private Account account = new Account();
+    private Profile profile = new Profile();
+}
+
+
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -40,11 +47,12 @@
                 <InputText id="password" @bind-Value="Account.Password" class="form-control" />
                 <ValidationMessage For="() => Account.Password" class="text-danger" />
             </div>
-            @* <div class="mb-3">
-                <label for="password2" class="form-label">Password2:</label>
-                <InputText id="password2" @bind-Value="Account.Password2" class="form-control" />
-                <ValidationMessage For="() => Account.Password2" class="text-danger" />
-            </div> *@
+            <div class="mb-3">
+                <label for="password" class="form-label">Password:</label>
+                <InputText id="password" @bind-Value="Account.Password" class="form-control" />
+                <ValidationMessage For="() => Account.Password" class="text-danger" />
+            </div>
+            
             <button type="submit" class="btn btn-primary">Create</button>
         </EditForm>
     </div>

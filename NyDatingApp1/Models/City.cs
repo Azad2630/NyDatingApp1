@@ -1,5 +1,6 @@
 ﻿using NyDatingApp1.Models;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace NyDatingApp1.Models
 {
@@ -14,6 +15,7 @@ namespace NyDatingApp1.Models
 
         [Required(ErrorMessage = "Please provide a City Name")]
         [StringLength(100)]
+        
         public string CityName { get; set; } = null!;
 
         public ICollection<Profile> Profiles { get; set; }
