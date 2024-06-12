@@ -23,11 +23,11 @@ namespace NyDatingApp1.Models
         [Required(ErrorMessage = "Please provide a User Name")]
         [StringLength(100)]
         public string UserName { get; set; } = null!;
-        public string? AboutMe { get; set; }
+        public string? AboutMe { get; set; } 
         [Required(ErrorMessage = "Please provide a Birth Date")]
-        public DateTime BirthDate { get; set; }
+        public DateTime BirthDate { get; set; } 
         [Range(50, 300)]
-        public int Height { get; set; }
+        public int Height { get; set; } 
 
 
         public City City { get; set; }

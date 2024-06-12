@@ -29,8 +29,8 @@ else
                     <ValidationMessage For="() => User.UserName" class="text-danger" />
                 </div>
                 <div class="mb-3">
-                    <label for="UserName" class="form-label">UserName:</label>
-                    <InputText id="UserName" @bind-Value="User.AboutMe" class="form-control" />
+                    <label for="AboutMe" class="form-label">AboutMe:</label>
+                    <InputText id="AboutMe" @bind-Value="User.AboutMe" class="form-control" />
                     <ValidationMessage For="() => User.AboutMe" class="text-danger" />
                 </div>
                 <div class="mb-3">
@@ -40,36 +40,11 @@ else
                     <ValidationMessage For="() => User.Height" class="text-danger" />
                 </div>
                 <div class="mb-3">
-                    <label for="UserName" class="form-label">UserName:</label>
-                    <InputDate id="UserName" @bind-Value="User.BirthDate" class="form-control" />
+                    <label for="BirthDate" class="form-label">BirthDate:</label>
+                    <InputDate id="BirthDate" @bind-Value="User.BirthDate" class="form-control" />
                     <ValidationMessage For="() => User.BirthDate" class="text-danger" />
                 </div>
-                @* <div class="mb-3">
-                    <label for="lastname" class="form-label">LastName:</label>
-                    <InputText id="lastname" @bind-Value="User.LastName" class="form-control" />
-                    <ValidationMessage For="() => User.LastName" class="text-danger" />
-                </div>
-                <div class="mb-3">
-                    <label for="email" class="form-label">Email:</label>
-                    <InputText type="email" id="email" @bind-Value="User.Email" class="form-control" />
-                    <ValidationMessage For="() => User.Email" class="text-danger" />
-                </div>
-                <div class="mb-3">
-                    <label for="login" class="form-label">Login:</label>
-                    <InputText id="login" @bind-Value="User.Login" class="form-control" />
-                    <ValidationMessage For="() => User.Login" class="text-danger" />
-                </div>
-                <div class="mb-3">
-                    <label for="password" class="form-label">Password:</label>
-                    <InputText id="password" @bind-Value="User.Password" class="form-control" />
-                    <ValidationMessage For="() => User.Password" class="text-danger" />
-                </div>
                 
-                <div class="mb-3">
-                    <label for="createdate" class="form-label">CreateDate:</label>
-                    <InputDate id="createdate" @bind-Value="User.CreateDate" class="form-control" />
-                    <ValidationMessage For="() => User.CreateDate" class="text-danger" />
-                </div> *@
 
                 
 
@@ -87,29 +62,78 @@ else
     [SupplyParameterFromQuery]
     public int Id { get; set; }
 
-    [SupplyParameterFromForm]
     public Profile? User { get; set; }
 
-
-    // public Profile Profile { get; set; }
+    public List<City> cities { get; set; } = new List<City>();
 
     protected override async Task OnInitializedAsync()
     {
-        User ??= await Db.Profiles.FirstOrDefaultAsync(m => m.AccountId == Id);
+        cities = await Db.Cities.ToListAsync();
 
-        if (User is null)
+        User = await Db.Profiles.FirstOrDefaultAsync(m => m.AccountId == Id);
+
+        if (User == null)
         {
-            NavigationManager.NavigateTo("notfound");
+            // Initialize User with default data
+            User = new Profile
+                {
+                    AccountId = 0,
+                    UserName = "Default User",
+                    AboutMe = "This is a default user profile.",
+                    BirthDate = DateTime.Now,
+                    Height = 170, // Default height in cm
+                    CityId = await CreateNewCityWithDefaultName() // Create new city with default name and get the new CityId
+                };
         }
     }
 
-    // To protect from overposting attacks, enable the specific properties you want to bind to.
-    // For more details, see https://aka.ms/RazorPagesCRUD.
+    public async Task<int> CreateNewCityWithDefaultName()
+    {
+        // Create new city with default name
+        var newCity = new City
+            {
+                CityName = "Default City" // Default city name
+                                          // Add other properties if needed
+            };
+
+        // Add new city to database
+        Db.Cities.Add(newCity);
+        await Db.SaveChangesAsync();
+
+        // Return the newly generated CityId
+        return newCity.CityId;
+    }
+
     public async Task UpdateUser()
     {
-        Db.Attach(User!).State = EntityState.Modified;
+        // Check if the user already exists in the database
+        var existingUser = await Db.Profiles.FirstOrDefaultAsync(m => m.AccountId == User.AccountId);
 
-        // Db.Attach(Profile).State = EntityState.Modified;
+        if (existingUser == null)
+        {
+            // Check if the account exists
+            var accountExists = UserExists(User.AccountId);
+
+            if (!accountExists)
+            {
+                // Create a new account
+                var newAccount = new Account
+                    {
+                        AccountId = User.AccountId, // Assign the provided AccountId
+                                                    // Add other properties if needed
+                    };
+
+                Db.Accounts.Add(newAccount);
+            }
+
+            // Attach the user as a new entity
+            Db.Profiles.Add(User);
+        }
+        else
+        {
+            // Update existing user
+            Db.Attach(User).State = EntityState.Modified;
+        }
 
         try
         {
@@ -117,7 +141,7 @@ else
         }
         catch (DbUpdateConcurrencyException)
         {
-            if (!UserExists(User!.AccountId))
+            if (!UserExists(User.AccountId))
             {
                 NavigationManager.NavigateTo("notfound");
             }
@@ -129,6 +153,7 @@ else
 
         NavigationManager.NavigateTo("/Tabel");
     }
+
 
     bool UserExists(int id)
     {

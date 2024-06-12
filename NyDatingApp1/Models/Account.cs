@@ -20,7 +20,7 @@ namespace NyDatingApp1.Models
 
         [Required(ErrorMessage = "Please provide a valid Email")]
         [StringLength(100)]
-        [EmailAddress]
+        //[EmailAddress]
         public string Email { get; set; }
 
         [Required(ErrorMessage = "Please provide a Login")]
@@ -31,15 +31,11 @@ namespace NyDatingApp1.Models
         [StringLength(100)]
         public string Password { get; set; }
 
-        //[Required(ErrorMessage = "Please provide a Password2")]
-        //[StringLength(100)]
-        //public string Password2 { get; set; } // Tilføj denne linje, hvis du vil inkludere Password2
+        
 
-        public DateTime CreateDate { get; set; } // Ingen StringLength her
+        public DateTime CreateDate { get; set; } 
 
-        //public int ProfileId { get; set; }
-
-        //public Profile Profile { get; set; }
+        
         public Profile Profile { get; set; }
     }
 }
