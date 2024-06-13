@@ -26,7 +26,7 @@ namespace NyDatingApp1.Models
         public string? AboutMe { get; set; } 
         [Required(ErrorMessage = "Please provide a Birth Date")]
         public DateTime BirthDate { get; set; } 
-        [Range(50, 300)]
+        //[Range(50, 300)]
         public int Height { get; set; } 
 
 

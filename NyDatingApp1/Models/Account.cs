@@ -21,7 +21,7 @@ namespace NyDatingApp1.Models
         [Required(ErrorMessage = "Please provide a valid Email")]
         [StringLength(100)]
         //[EmailAddress]
-        public string Email { get; set; }
+        public string Email { get; set; } = null;
 
         [Required(ErrorMessage = "Please provide a Login")]
         [StringLength(100)]

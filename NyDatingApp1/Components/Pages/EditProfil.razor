@@ -35,7 +35,6 @@ else
                 </div>
                 <div class="mb-3">
                     <label for="Height" class="form-label">Height:</label>
-                    <!-- Brug InputNumber for int egenskaber -->
                     <InputNumber id="Height" @bind-Value="User.Height" class="form-control" />
                     <ValidationMessage For="() => User.Height" class="text-danger" />
                 </div>
@@ -81,7 +80,7 @@ else
                     UserName = "Default User",
                     AboutMe = "This is a default user profile.",
                     BirthDate = DateTime.Now,
-                    Height = 170, // Default height in cm
+                    Height = 0, // Default height in cm
                     CityId = await CreateNewCityWithDefaultName() // Create new city with default name and get the new CityId
                 };
         }
