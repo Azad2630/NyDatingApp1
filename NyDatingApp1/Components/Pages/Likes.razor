@@ -1,0 +1,68 @@
+﻿@page "/Tabel/Likes"
+@using NyDatingApp1.Models
+@using NyDatingApp1.Services
+@inject LikeService LikeService
+@inject ProfileService ProfileService
+
+<h3>Likes</h3>
+
+
+@if (profiles != null)
+{
+    @foreach (var profile in profiles)
+    {
+        <div class="mb-4">
+            <span>@profile.UserName</span>
+            @if (profile.IsLiked)
+            {
+                <span class="ms-4 text-success"> - Already Liked</span>
+            }
+            else
+            {
+                <button type="submit" class="btn btn-primary ms-4" @onclick="() => GiveLike(profile.ProfileId)">Like</button>
+            }
+
+            <span class="ms-4">Antal like modtaget: @profile.ReceivedLikes.Count</span>
+        </div>
+    }
+}
+else
+{
+    <p>Loading...</p>
+}
+
+@code {
+    private List<Profile> profiles;
+
+    private int senderId = 1; // For demonstration, brug et fast bruger-ID
+
+    protected override async Task OnInitializedAsync()
+    {
+        profiles = (await ProfileService.GetAllProfilesAsync()).ToList();
+
+        // Hent antallet af received likes for hver profil
+        foreach (var profile in profiles)
+        {
+            profile.ReceivedLikes = await LikeService.GetReceivedLikesAsync(profile.ProfileId);
+            profile.IsLiked = await IsProfileLiked(profile.ProfileId);
+        }
+    }
+
+    private async Task GiveLike(int receiverId)
+    {
+        await LikeService.AddLikeAsync(senderId, receiverId);
+
+        // Opdater profile like status og antal received likes
+        var profile = profiles.FirstOrDefault(p => p.ProfileId == receiverId);
+        if (profile != null)
+        {
+            profile.IsLiked = true;
+            profile.ReceivedLikes = await LikeService.GetReceivedLikesAsync(receiverId);
+        }
+    }
+
+    private async Task<bool> IsProfileLiked(int receiverId)
+    {
+        return await LikeService.IsProfileLikedByUserAsync(senderId, receiverId);
+    }
+}

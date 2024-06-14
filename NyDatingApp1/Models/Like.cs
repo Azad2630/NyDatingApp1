@@ -21,7 +21,6 @@ namespace NyDatingApp1.Models
         public Profile SenderProfile { get; set; }
         public Profile ReceiverProfile { get; set; }
 
-        //public virtual Profile Liker { get; set; } = null!;
-        //public virtual Profile Likee { get; set; } = null!;
+        
     }
 }

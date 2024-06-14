@@ -25,6 +25,10 @@ namespace NyDatingApp1
 
             builder.Services.AddScoped<IUserService, UserService>();
 
+            builder.Services.AddScoped<LikeService>();
+
+            builder.Services.AddScoped<ProfileService>();
+
             builder.Services.AddRazorPages();
 
             var app = builder.Build();
