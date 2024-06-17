@@ -19,15 +19,26 @@ namespace NyDatingApp1.Services
         {
             return await _context.Profiles.ToListAsync();
         }
+
         public async Task<bool> HasSentLikeAsync(int senderId, int receiverId)
         {
-            // Implementér logikken til at tjekke om brugeren har sendt en like til receiverId
-            // Dette kan involvere at hente likes fra databasen og tjekke modtageren
-            // Her er et eksempel, du skal muligvis justere dette efter din databasestruktur
-            var sentLikes = await _context.Likes
-                .AnyAsync(l => l.SenderId == senderId && l.ReceiverId == receiverId);
+            if (senderId <= 0 || receiverId <= 0)
+            {
+                throw new ArgumentException("SenderId and ReceiverId must be greater than zero.");
+            }
 
-            return sentLikes; // Returner sandt, hvis der er mindst én matchende like
+            try
+            {
+                var sentLikes = await _context.Likes
+                    .AnyAsync(l => l.SenderId == senderId && l.ReceiverId == receiverId);
+
+                return sentLikes;
+            }
+            catch (Exception ex)
+            {
+                // Log the exception or handle it appropriately
+                throw new ApplicationException("Error checking if like was sent.", ex);
+            }
         }
     }
 }

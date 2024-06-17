@@ -5,7 +5,7 @@
 namespace NyDatingApp1.Migrations
 {
     /// <inheritdoc />
-    public partial class lol : Migration
+    public partial class Initial23 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

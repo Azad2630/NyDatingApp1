@@ -19,10 +19,9 @@
             }
             else
             {
-                <button type="submit" class="btn btn-primary ms-4" @onclick="() => GiveLike(profile.ProfileId)">Like</button>
+                <button type="button" class="btn btn-primary ms-4" @onclick="async () => await GiveLike(profile.ProfileId)">Like</button>
             }
-
-            <span class="ms-4">Antal like modtaget: @profile.ReceivedLikes.Count</span>
+            <span class="ms-4">Modtaget likes: @(profile.ReceivedLikes != null && profile.ReceivedLikes.Any() ? "True" : "False")</span>
         </div>
     }
 }
@@ -40,7 +39,6 @@ else
     {
         profiles = (await ProfileService.GetAllProfilesAsync()).ToList();
 
-        // Hent antallet af received likes for hver profil
         foreach (var profile in profiles)
         {
             profile.ReceivedLikes = await LikeService.GetReceivedLikesAsync(profile.ProfileId);
@@ -50,14 +48,23 @@ else
 
     private async Task GiveLike(int receiverId)
     {
-        await LikeService.AddLikeAsync(senderId, receiverId);
-
-        // Opdater profile like status og antal received likes
-        var profile = profiles.FirstOrDefault(p => p.ProfileId == receiverId);
-        if (profile != null)
+        try
         {
-            profile.IsLiked = true;
-            profile.ReceivedLikes = await LikeService.GetReceivedLikesAsync(receiverId);
+            Console.WriteLine("GiveLike called"); // Debug udskrift
+            await LikeService.AddLikeAsync(senderId, receiverId);
+
+            // Opdater profile like status og antal received likes
+            var profile = profiles.FirstOrDefault(p => p.ProfileId == receiverId);
+            if (profile != null)
+            {
+                profile.IsLiked = true;
+                profile.ReceivedLikes = await LikeService.GetReceivedLikesAsync(receiverId);
+                StateHasChanged(); // Opdaterer UI
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error occurred while giving like: {ex.Message}");
         }
     }
 

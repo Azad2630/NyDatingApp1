@@ -10,17 +10,21 @@ namespace NyDatingApp1.Models
         public int LikeId { get; set; }
 
         [Required(ErrorMessage = "Please provide a valid Liker Id")]
-        [ForeignKey("SenderProfile")]
+        //[ForeignKey("SenderProfile")]
         public int SenderId { get; set; }
 
         [Required(ErrorMessage = "Please provide a valid Likee Id")]
-        [ForeignKey("ReceiverProfile")]
+        //[ForeignKey("ReceiverProfile")]
         public int ReceiverId { get; set; }
+
         public int Status { get; set; } = 0;
 
+        [ForeignKey("SenderId")]
         public Profile SenderProfile { get; set; }
+
+        [ForeignKey("ReceiverId")]
         public Profile ReceiverProfile { get; set; }
 
-        
+
     }
 }

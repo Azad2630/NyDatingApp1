@@ -5,7 +5,7 @@
 namespace NyDatingApp1.Migrations
 {
     /// <inheritdoc />
-    public partial class kdsf : Migration
+    public partial class Initial234 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

@@ -12,8 +12,8 @@ using NyDatingApp1.Data;
 namespace NyDatingApp1.Migrations
 {
     [DbContext(typeof(datingdatabase))]
-    [Migration("20240612090407_lol")]
-    partial class lol
+    [Migration("20240617103636_Initial234")]
+    partial class Initial234
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -71,10 +71,7 @@ namespace NyDatingApp1.Migrations
             modelBuilder.Entity("NyDatingApp1.Models.City", b =>
                 {
                     b.Property<int>("CityId")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CityId"));
 
                     b.Property<string>("CityName")
                         .IsRequired()
@@ -82,6 +79,9 @@ namespace NyDatingApp1.Migrations
                         .HasColumnType("nvarchar(100)");
 
                     b.HasKey("CityId");
+
+                    b.HasIndex("CityName")
+                        .IsUnique();
 
                     b.ToTable("Cities");
                 });
@@ -101,7 +101,9 @@ namespace NyDatingApp1.Migrations
                         .HasColumnType("int");
 
                     b.Property<int>("Status")
-                        .HasColumnType("int");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValueSql("0");
 
                     b.HasKey("LikeId");
 
@@ -180,7 +182,7 @@ namespace NyDatingApp1.Migrations
                     b.HasOne("NyDatingApp1.Models.City", "City")
                         .WithMany("Profiles")
                         .HasForeignKey("CityId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Account");

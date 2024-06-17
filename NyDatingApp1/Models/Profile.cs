@@ -31,11 +31,18 @@ namespace NyDatingApp1.Models
 
         public City City { get; set; }
         public Account Account { get; set; }
-        public ICollection<Like> SentLikes { get; set; }
-        public ICollection<Like> ReceivedLikes { get; set; }
+        //public Profile SenderProfile { get; set; }
+        //public Profile ReceiverProfile { get; set; }
 
+        public virtual ICollection<Like> SentLikes { get; set; } = new List<Like>();
+        public virtual ICollection<Like> ReceivedLikes { get; set; } = new List<Like>();
+        //public ICollection<Like> SentLikes { get; set; }
+        //public ICollection<Like> ReceivedLikes { get; set; }
 
         [NotMapped]
         public bool IsLiked { get; set; }
+
+        [NotMapped]
+        public bool HasReceivedLikes { get; set; }
     }
 }

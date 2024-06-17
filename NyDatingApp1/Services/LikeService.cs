@@ -9,43 +9,56 @@ namespace NyDatingApp1.Services
 {
     public class LikeService
     {
-        private readonly datingdatabase _dbContext;
+        private readonly datingdatabase _context;
 
-        public LikeService(datingdatabase dbContext)
+        public LikeService(datingdatabase context)
         {
-            _dbContext = dbContext;
-        }
-
-        public async Task<List<Like>> GetReceivedLikesAsync(int profileId)
-        {
-            // Hent alle likes, hvor den angivne profil er receiver
-            return await _dbContext.Likes
-                                  .Include(l => l.SenderProfile)
-                                  .Where(l => l.ReceiverId == profileId)
-                                  .ToListAsync();
-        }
-
-        public async Task<bool> IsProfileLikedByUserAsync(int senderId, int receiverId)
-        {
-            // Implementer logik til at checke om en profil er liket af en bruger
-            // Dette kan være en simpel check eller mere kompleks afhængigt af dine behov
-            return await _dbContext.Likes
-                                  .AnyAsync(l => l.SenderId == senderId && l.ReceiverId == receiverId);
+            _context = context;
         }
 
         public async Task AddLikeAsync(int senderId, int receiverId)
         {
-            // Implementer logik til at tilføje en like
-            // Dette kunne være at oprette en ny Like-entré i din database
-            var like = new Like
+            try
             {
-                SenderId = senderId,
-                ReceiverId = receiverId,
-                Status = 1 // Eksempel på status (kan være hvad som helst afhængigt af din logik)
-            };
+                // Check if the like already exists
+                var existingLike = await _context.Likes
+                    .FirstOrDefaultAsync(l => l.SenderId == senderId && l.ReceiverId == receiverId);
 
-            _dbContext.Likes.Add(like);
-            await _dbContext.SaveChangesAsync();
+                if (existingLike != null)
+                {
+                    // Update existing like count
+                    existingLike.Status++;
+                    _context.Likes.Update(existingLike);
+                }
+                else
+                {
+                    // Create new like entry
+                    var newLike = new Like
+                    {
+                        SenderId = senderId,
+                        ReceiverId = receiverId,
+                        Status = 1 // Initial like count
+                    };
+                    _context.Likes.Add(newLike);
+                }
+
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                // Log or handle the exception appropriately
+                throw new ApplicationException("Error occurred while adding like.", ex);
+            }
+        }
+
+        public async Task<bool> IsProfileLikedByUserAsync(int senderId, int receiverId)
+        {
+            return await _context.Likes.AnyAsync(l => l.SenderId == senderId && l.ReceiverId == receiverId);
+        }
+
+        public async Task<List<Like>> GetReceivedLikesAsync(int profileId)
+        {
+            return await _context.Likes.Where(l => l.ReceiverId == profileId).ToListAsync();
         }
     }
 }
