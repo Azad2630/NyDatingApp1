@@ -3,11 +3,75 @@
 @using NyDatingApp1.Services
 @inject LikeService LikeService
 @inject ProfileService ProfileService
+@using Microsoft.AspNetCore.Components.QuickGrid
+@inject NyDatingApp1.Data.datingdatabase Db
+
+
 
 <h3>Likes</h3>
 
 
-@if (profiles != null)
+
+
+
+
+
+
+
+<QuickGrid Class="table" Items="Db.Likes">
+    <PropertyColumn Property="like => like.SenderId" />
+    <PropertyColumn Property="like => like.ReceiverId" />
+    <PropertyColumn Property="like => like.Status" />
+
+    <TemplateColumn Context="like">
+        <a href="@($"likes/edit?likeid={like.LikeId}")">Edit</a> |
+        <a href="@($"likes/details?likeid={like.LikeId}")">Details</a> |
+        <a href="@($"likes/delete?likeid={like.LikeId}")">Delete</a>
+    </TemplateColumn>
+</QuickGrid>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@* @if (profiles != null)
 {
     @foreach (var profile in profiles)
     {
@@ -72,4 +136,4 @@ else
     {
         return await LikeService.IsProfileLikedByUserAsync(senderId, receiverId);
     }
-}
+} *@
